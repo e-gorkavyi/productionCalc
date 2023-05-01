@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="662.0" prefWidth="552.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.CalcController">
+  <padding>
+    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+  </padding>
+   <children>
+      <Label text="Выберите вид изделия" />
+      <HBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="444.0" VBox.vgrow="NEVER">
+         <children>
+            <RadioButton id="f0201Radio" fx:id="f0201" mnemonicParsing="false" onAction="#onF0201Change" selected="true" text="FEFCO 0201">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="productType" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton id="f0427Radio" fx:id="f0427" mnemonicParsing="false" onAction="#onF0427Change" text="FEFCO 0427" toggleGroup="$productType">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton id="f0471Radio" fx:id="f0471" mnemonicParsing="false" onAction="#onF0471Change" text="FEFCO 0471" toggleGroup="$productType">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton id="body_lidRadio" fx:id="body_lid" mnemonicParsing="false" onAction="#onBodyLidChange" text="крышка-дно" toggleGroup="$productType">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Label text="Выберите материал" />
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ListView fx:id="materialListView" maxHeight="3000.0" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Label text="Внутренние размеры" />
+      <GridPane VBox.vgrow="NEVER">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Длина" />
+            <Label text="Ширина" GridPane.rowIndex="1" />
+            <Label text="Высота" GridPane.rowIndex="2" />
+            <TextField fx:id="productLenghtTextField" text="100" GridPane.columnIndex="1" />
+            <TextField fx:id="productWidthTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="productHeightTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Separator prefWidth="200.0" />
+      <Label text="Печать" />
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <RadioButton fx:id="printYesRadio" mnemonicParsing="false" onAction="#onPrintYes" text="Да">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="selectPrint" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="printNoRadio" mnemonicParsing="false" onAction="#onPrintNo" selected="true" text="Нет" toggleGroup="$selectPrint">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Label layoutX="25.0" layoutY="382.0" text="Ручка" />
+      <HBox alignment="TOP_CENTER" layoutX="25.0" layoutY="406.0" prefHeight="51.0" prefWidth="422.0">
+         <children>
+            <RadioButton fx:id="handlerYesRadio" mnemonicParsing="false" onAction="#onHandlerYes" text="Да">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="selectHand" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="handlerNoRadio" mnemonicParsing="false" onAction="#onHandlerNo" selected="true" text="Нет" toggleGroup="$selectHand">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <Label fx:id="cutTimeLabel" style="-fx-font-weight: bold;" text="Время реза: 0 мин." />
+      <Label fx:id="sheetSizeLabel" style="-fx-font-weight: bold;" text="Лист: 0*0" />
+      <Label fx:id="partSizeLabel" style="-fx-font-weight: bold;" text="Развёртка: 0*0" />
+      <Label fx:id="partOnSheetLabel" style="-fx-font-weight: bold;" text="Изделий на листе: 0" />
+      <Label fx:id="priceLabel" style="-fx-font-size: 150%; -fx-font-weight: bold;" text="Стоимость: ---">
+         <font>
+            <Font name="System Bold" size="11.686956405639648" />
+         </font>
+      </Label>
+   </children>
+</VBox>
