@@ -9,8 +9,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Properties;
 
 public class CalcApplication extends Application {
@@ -32,14 +30,10 @@ public class CalcApplication extends Application {
         appPrefsLoad(stage, appPrefsPath);
 
         stage.show();
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                appPrefsSave(stage, appPrefsPath);
-            }
-        });
+        stage.setOnCloseRequest(we -> appPrefsSave(stage, appPrefsPath));
     }
 
-    public void appPrefsLoad(Stage stage, String appPrefsPath) throws FileNotFoundException {
+    public void appPrefsLoad(Stage stage, String appPrefsPath) {
         Properties properties = new Properties();
 
         if (new File(appPrefsPath).exists()) {
