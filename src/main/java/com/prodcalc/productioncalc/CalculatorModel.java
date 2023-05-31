@@ -97,13 +97,13 @@ public class CalculatorModel {
             float OG = currentMaterial.outsideGain;
 
             // расчёт длины заготовки
-            int BlanksOnProd = 1;
+            float BlanksOnProd = 1F;
             int LBlank = 0;
             int WBlank = 0;
             if (boxType == ProductTypes.F0201) {
                 LBlank = Math.round(2 * (productLength + 2 * IL) + 2 * (productWidth + 2 * IL) + 45);
                 if (LBlank <= LMat)
-                    BlanksOnProd = 1;
+                    BlanksOnProd = 1F;
                 if (Float.compare(LMat, LBlank) == -1 && Float.compare(LBlank, 2 * LMat) == -1)
                 {
                     LBlank = Math.round((productLength + 2 * IL) + (productWidth + 2 * IL) + 45);
@@ -156,7 +156,7 @@ public class CalculatorModel {
 
             // расчёт количества заготовок на лист
 
-            int CList = 1;
+            float CList = 1F;
             float C;
             float C1;
             float C2;
@@ -165,7 +165,7 @@ public class CalculatorModel {
             float CL = LMat / LBlank;
             if (CL < 1) {
                 CList = BlanksOnProd;
-                CList = (int) Math.ceil(CList);
+                CList = (float) Math.ceil(CList);
                 CL = 1;
             }
             float CW = WMax / WBlank;
@@ -181,7 +181,7 @@ public class CalculatorModel {
             CL = LMat / WBlank;
             if (CL < 1) {
                 CList = BlanksOnProd;
-                CList = (int) Math.ceil(CList);
+                CList = (float) Math.ceil(CList);
                 CL = 1;
             }
             CW = WMax / LBlank;
