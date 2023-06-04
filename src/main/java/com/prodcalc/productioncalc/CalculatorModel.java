@@ -6,6 +6,15 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 public class CalculatorModel {
+
+    public materialProperties getSelectedMaterial() {
+        return materials
+                .stream()
+                .filter(mat -> selectedMaterial.equals(mat.name))
+                .findAny()
+                .orElse(null);
+    }
+
     private ArrayList<materialProperties> materials = new ArrayList<>();
 
     public ArrayList<String> materialNamesList = new ArrayList<>();

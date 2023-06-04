@@ -1,12 +1,10 @@
 package com.prodcalc.productioncalc;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.util.Properties;
@@ -14,7 +12,7 @@ import java.util.Properties;
 public class CalcApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(CalcApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(CalcApplication.class.getResource("CalcDialog.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Расчёт стоимости типовых конструкций");
         stage.setScene(scene);
@@ -39,7 +37,7 @@ public class CalcApplication extends Application {
         if (new File(appPrefsPath).exists()) {
             try {
                 FileInputStream inputStream = new FileInputStream(appPrefsPath);
-                properties.load(inputStream);
+                properties.loadFromXML(inputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,7 +68,7 @@ public class CalcApplication extends Application {
             outFile.createNewFile();
 
             OutputStream outputstream = new FileOutputStream(outFile, false);
-            properties.store(outputstream,"App Prefs");
+            properties.storeToXML(outputstream,"App Prefs");
             outputstream.close();
 
         } catch (IOException e) {
@@ -84,3 +82,4 @@ public class CalcApplication extends Application {
         launch();
     }
 }
+

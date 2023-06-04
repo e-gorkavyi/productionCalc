@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="662.0" prefWidth="552.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.CalcController">
+<VBox prefHeight="614.0" prefWidth="552.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.CalcController">
   <padding>
     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
   </padding>
@@ -43,6 +43,12 @@
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <ListView fx:id="materialListView" maxHeight="3000.0" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="22.0" prefWidth="523.0">
+         <children>
+            <Button fx:id="addMaterialBtn" mnemonicParsing="false" onAction="#onAddMateriaBtn" text="Добавить материал" />
+            <Button fx:id="deleteMaterialBtn" mnemonicParsing="false" onAction="#onDeleteMaterialBtn" text="Удалить материал" />
          </children>
       </HBox>
       <Separator prefWidth="200.0" />

@@ -3,17 +3,30 @@ package com.prodcalc.productioncalc;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CalcController implements Initializable {
 
     @FXML
-    public ListView<String> materialListView;
+    private ListView<String> materialListView;
+    @FXML
+    private Button addMaterialBtn;
+    @FXML
+    private Button deleteMaterialBtn;
     @FXML
     private ToggleGroup productType;
     @FXML
@@ -148,6 +161,26 @@ public class CalcController implements Initializable {
     public void onHandlerNo(ActionEvent actionEvent) {
         model.handlerOn = false;
         getResult(model);
+    }
+
+    public void onAddMateriaBtn(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MaterialDialog.fxml"));
+        Parent root = loader.load();
+
+        MaterialDialog matController = loader.getController();
+        matController.setData(model.getSelectedMaterial());
+
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Параметры материала");
+        primaryStage.setScene(new Scene(root));
+        root.setStyle("-fx-font-size: 11pt;");
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(addMaterialBtn.getScene().getWindow());
+
+        primaryStage.show();
+    }
+
+    public void onDeleteMaterialBtn(ActionEvent actionEvent) {
     }
 }
 

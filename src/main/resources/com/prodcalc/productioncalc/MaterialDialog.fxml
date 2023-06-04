@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="384.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.MaterialDialog">
+   <children>
+      <TextField fx:id="nameField" alignment="CENTER" promptText="Наименование" />
+      <TextField fx:id="lendthField" alignment="CENTER" promptText="Длина" />
+      <TextField fx:id="widthField" alignment="CENTER" promptText="Ширина" />
+      <TextField fx:id="caliberField" alignment="CENTER" promptText="Толщина" />
+      <TextField fx:id="priceField" alignment="CENTER" promptText="Стоимость листа" />
+      <Separator prefWidth="200.0">
+         <opaqueInsets>
+            <Insets bottom="5.0" top="5.0" />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin></Separator>
+      <Label text="Направление гофры" />
+      <HBox alignment="CENTER" prefHeight="37.0" prefWidth="495.0">
+         <children>
+            <RadioButton fx:id="lengthSideFluteRB" mnemonicParsing="false" selected="true" text="По длинной стороне">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <toggleGroup>
+                  <ToggleGroup fx:id="fluteDirection" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="shortSideFluteRB" mnemonicParsing="false" text="По коротной стороне" toggleGroup="$fluteDirection">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding></RadioButton>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></HBox>
+      <HBox alignment="CENTER" prefHeight="97.0" prefWidth="495.0">
+         <children>
+            <Button fx:id="okButton" mnemonicParsing="false" onAction="#OnOkAction" text="Сохранить" />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelAction" text="Отмена" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
