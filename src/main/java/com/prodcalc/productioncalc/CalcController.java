@@ -3,20 +3,20 @@ package com.prodcalc.productioncalc;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CalcController implements Initializable {
@@ -65,7 +65,13 @@ public class CalcController implements Initializable {
     private Label partOnSheetLabel;
     @FXML
     private Label priceLabel;
-
+    @FXML
+    void onMaterialListClicked(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if (mouseEvent.getClickCount() == 2)
+                editMaterial();
+        }
+    }
 
     private CalculatorModel model = new CalculatorModel();
 
@@ -163,24 +169,31 @@ public class CalcController implements Initializable {
         getResult(model);
     }
 
-    public void onAddMateriaBtn(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MaterialDialog.fxml"));
-        Parent root = loader.load();
-
-        MaterialDialog matController = loader.getController();
-        matController.setData(model.getSelectedMaterial());
-
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Параметры материала");
-        primaryStage.setScene(new Scene(root));
-        root.setStyle("-fx-font-size: 11pt;");
-        primaryStage.initModality(Modality.WINDOW_MODAL);
-        primaryStage.initOwner(addMaterialBtn.getScene().getWindow());
-
-        primaryStage.show();
+    public void onAddMaterialBtn(ActionEvent actionEvent) throws IOException {
+        MaterialDialogWindow materialDialogWindow = new MaterialDialogWindow();
+        MaterialProperties materialProperties = materialDialogWindow.display(
+                model.getSelectedMaterial(),
+                addMaterialBtn.getScene().getWindow(),
+                false);
+        if (materialProperties == null)
+            System.out.println("Empty");
+        else
+            System.out.println(materialProperties.name);
     }
 
     public void onDeleteMaterialBtn(ActionEvent actionEvent) {
+    }
+
+    private void editMaterial() throws IOException {
+        MaterialDialogWindow materialDialogWindow = new MaterialDialogWindow();
+        MaterialProperties materialProperties = materialDialogWindow.display(
+                model.getSelectedMaterial(),
+                addMaterialBtn.getScene().getWindow(),
+                true);
+        if (materialProperties == null)
+            System.out.println("Empty");
+        else
+            System.out.println(materialProperties.name);
     }
 }
 
@@ -189,4 +202,27 @@ enum ProductTypes {
     F0427,
     F0471,
     BODY_LID
+}
+
+class MaterialDialogWindow {
+    MaterialProperties display(MaterialProperties materialProperties, Window parent, boolean edit) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MaterialDialog.fxml"));
+        Parent root = loader.load();
+
+        MaterialDialog matController = loader.getController();
+        if (edit)
+            matController.setData(materialProperties);
+
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Параметры материала");
+        primaryStage.setScene(new Scene(root));
+        root.setStyle("-fx-font-size: 11pt;");
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(parent);
+
+        primaryStage.showAndWait();
+
+        return matController.getData();
+    }
 }

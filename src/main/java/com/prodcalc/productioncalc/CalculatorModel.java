@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class CalculatorModel {
 
-    public materialProperties getSelectedMaterial() {
+    public MaterialProperties getSelectedMaterial() {
         return materials
                 .stream()
                 .filter(mat -> selectedMaterial.equals(mat.name))
@@ -15,7 +15,7 @@ public class CalculatorModel {
                 .orElse(null);
     }
 
-    private ArrayList<materialProperties> materials = new ArrayList<>();
+    private ArrayList<MaterialProperties> materials = new ArrayList<>();
 
     public ArrayList<String> materialNamesList = new ArrayList<>();
     public ProductTypes boxType = ProductTypes.F0201;
@@ -33,7 +33,7 @@ public class CalculatorModel {
     String priceTxt = "";
 
     public CalculatorModel() {
-        materials.add(new materialProperties(
+        materials.add(new MaterialProperties(
                 "5-сл, профиль BE",
                 5F,
                 1700F,
@@ -43,7 +43,7 @@ public class CalculatorModel {
                 1.5F,
                 "W"
         ));
-        materials.add(new materialProperties(
+        materials.add(new MaterialProperties(
                 "3-сл, профиль C",
                 4F,
                 2200F,
@@ -53,7 +53,7 @@ public class CalculatorModel {
                 1.5F,
                 "W"
         ));
-        materials.add(new materialProperties(
+        materials.add(new MaterialProperties(
                 "микрогофрокартон, профиль E",
                 2F,
                 2200F,
@@ -66,11 +66,30 @@ public class CalculatorModel {
 
         selectedMaterial = materials.get(0).name;
 
-        for (materialProperties mat : materials) {
+        for (MaterialProperties mat : materials) {
             materialNamesList.add(mat.name);
         }
 
         materialViewList = FXCollections.observableArrayList(materialNamesList);
+    }
+
+    public boolean addMaterial (MaterialProperties material) {
+        for (MaterialProperties mat : materials) {
+            if (mat.name.equals(material.name))
+                return false;
+        }
+        materials.add(material);
+        return true;
+    }
+
+    public boolean deleteMaterial (MaterialProperties material) {
+        for (MaterialProperties mat : materials) {
+            if (mat.name.equals(material.name)) {
+                materials.remove(mat);
+                return true;
+            }
+        }
+        return false;
     }
     
     private void sizeError() {
@@ -90,7 +109,7 @@ public class CalculatorModel {
     }
 
     public void go() {
-        materialProperties currentMaterial = materials.stream()
+        MaterialProperties currentMaterial = materials.stream()
                 .filter(mat -> selectedMaterial.equals(mat.name))
                 .findAny()
                 .orElse(null);
@@ -283,7 +302,7 @@ public class CalculatorModel {
     }
 }
 
-class materialProperties {
+class MaterialProperties {
     public String name;
     public float caliber;
     public float length;
@@ -293,7 +312,7 @@ class materialProperties {
     public float outsideGain;
     public String fluteDirection;
 
-    public materialProperties(String name,
+    public MaterialProperties(String name,
                               float caliber,
                               float length,
                               float width,

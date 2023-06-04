@@ -38,7 +38,7 @@
          </opaqueInsets></HBox>
       <HBox alignment="CENTER" prefHeight="97.0" prefWidth="495.0">
          <children>
-            <Button fx:id="okButton" mnemonicParsing="false" onAction="#OnOkAction" text="Сохранить" />
+            <Button fx:id="okButton" mnemonicParsing="false" onAction="#onOkAction" text="Сохранить" />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelAction" text="Отмена" />
          </children>
       </HBox>

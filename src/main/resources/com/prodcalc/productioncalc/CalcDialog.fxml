@@ -42,12 +42,12 @@
       <Label text="Выберите материал" />
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <ListView fx:id="materialListView" maxHeight="3000.0" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
+            <ListView fx:id="materialListView" maxHeight="3000.0" onMouseClicked="#onMaterialListClicked" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="22.0" prefWidth="523.0">
          <children>
-            <Button fx:id="addMaterialBtn" mnemonicParsing="false" onAction="#onAddMateriaBtn" text="Добавить материал" />
+            <Button fx:id="addMaterialBtn" mnemonicParsing="false" onAction="#onAddMaterialBtn" text="Добавить материал" />
             <Button fx:id="deleteMaterialBtn" mnemonicParsing="false" onAction="#onDeleteMaterialBtn" text="Удалить материал" />
          </children>
       </HBox>

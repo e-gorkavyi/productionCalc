@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class MaterialDialog {
     @FXML
@@ -26,14 +27,22 @@ public class MaterialDialog {
     @FXML
     private Button cancelButton;
 
-    public void OnOkAction(ActionEvent actionEvent) {
+    private boolean answer = false;
+
+    public void onOkAction(ActionEvent actionEvent) {
+        answer = true;
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 
     public void onCancelAction(ActionEvent actionEvent) {
+        answer = false;
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 
 
-    public void setData(materialProperties receivedMaterial) {
+    public void setData(MaterialProperties receivedMaterial) {
         nameField.setText(receivedMaterial.name);
         lendthField.setText(String.valueOf(receivedMaterial.length));
         widthField.setText(String.valueOf(receivedMaterial.width));
@@ -43,5 +52,22 @@ public class MaterialDialog {
             lengthSideFluteRB.setSelected(true);
         else if (receivedMaterial.fluteDirection.equals("W"))
             shortSideFluteRB.setSelected(true);
+    }
+
+    public MaterialProperties getData() {
+        if (answer) {
+            return new MaterialProperties(
+                    nameField.getText(),
+                    Float.parseFloat(caliberField.getText()),
+                    Float.parseFloat(lendthField.getText()),
+                    Float.parseFloat(widthField.getText()),
+                    Float.parseFloat(priceField.getText()),
+                    Float.parseFloat(caliberField.getText()) * 2 / 3,
+                    Float.parseFloat(caliberField.getText()) / 3,
+                    lengthSideFluteRB.isSelected() ? "L" : "W"
+            );
+        } else {
+            return null;
+        }
     }
 }
