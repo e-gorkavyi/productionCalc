@@ -2,10 +2,113 @@ package com.prodcalc.productioncalc;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class CalculatorModel {
+
+    String matPrefsPath = System.getProperty(
+            "user.home") + File.separator +
+            ".config" + File.separator +
+            "productionCalc" + File.separator +
+            "materials.conf";
+
+    public void matPrefsLoad(ArrayList<MaterialProperties> matList, String filePath) {
+        Properties properties = new Properties();
+
+        if (new File(filePath).exists()) {
+            try {
+                FileInputStream inputStream = new FileInputStream(filePath);
+                properties.loadFromXML(inputStream);
+
+                int i = 0;
+                while (true) {
+                    if (properties.containsKey(String.valueOf(i))){
+                        matList.add(new MaterialProperties(
+                                properties.getProperty(String.valueOf(i)),
+                                Float.parseFloat(properties.getProperty(i + "-caliber")),
+                                Float.parseFloat(properties.getProperty(i + "-length")),
+                                Float.parseFloat(properties.getProperty(i + "-width")),
+                                Float.parseFloat(properties.getProperty(i + "-price")),
+                                Float.parseFloat(properties.getProperty(i + "-insideLoss")),
+                                Float.parseFloat(properties.getProperty(i + "-outsideGain")),
+                                properties.getProperty(i + "-fluteDirection")
+                        ));
+                        i++;
+                    } else {
+                        break;
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            materials.add(new MaterialProperties(
+                    "5-сл, профиль BE",
+                    5F,
+                    1700F,
+                    1400F,
+                    177F,
+                    3.5F,
+                    1.5F,
+                    "W"
+            ));
+            materials.add(new MaterialProperties(
+                    "3-сл, профиль C",
+                    4F,
+                    2200F,
+                    1400F,
+                    160F,
+                    2.5F,
+                    1.5F,
+                    "W"
+            ));
+            materials.add(new MaterialProperties(
+                    "микрогофрокартон, профиль E",
+                    2F,
+                    2200F,
+                    1400F,
+                    140F,
+                    1.3F,
+                    0.7F,
+                    "L"
+            ));
+        }
+    }
+
+    public void matPrefsSave(ArrayList<MaterialProperties> matList, String filePath) {
+        Properties properties = new Properties();
+
+        try {
+            for (int i = 0; i < matList.size(); i++) {
+                properties.setProperty(String.valueOf(i), matList.get(i).name);
+                properties.setProperty(i + "-caliber", String.valueOf(matList.get(i).caliber));
+                properties.setProperty(i + "-length", String.valueOf(matList.get(i).length));
+                properties.setProperty(i + "-width", String.valueOf(matList.get(i).width));
+                properties.setProperty(i + "-price", String.valueOf(matList.get(i).price));
+                properties.setProperty(i + "-insideLoss", String.valueOf(matList.get(i).insideLoss));
+                properties.setProperty(i + "-outsideGain", String.valueOf(matList.get(i).outsideGain));
+                properties.setProperty(i + "-fluteDirection", matList.get(i).fluteDirection);
+            }
+
+            File outFile = new File(filePath);
+            outFile.getParentFile().mkdirs();
+            System.out.println(outFile.delete());
+            System.out.println(outFile.createNewFile());
+
+            OutputStream outputstream = new FileOutputStream(outFile, false);
+            properties.storeToXML(outputstream,"Material Prefs");
+            outputstream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(filePath);
+        }
+    }
 
     public MaterialProperties getSelectedMaterial() {
         return materials
@@ -33,44 +136,20 @@ public class CalculatorModel {
     String priceTxt = "";
 
     public CalculatorModel() {
-        materials.add(new MaterialProperties(
-                "5-сл, профиль BE",
-                5F,
-                1700F,
-                1400F,
-                177F,
-                3.5F,
-                1.5F,
-                "W"
-        ));
-        materials.add(new MaterialProperties(
-                "3-сл, профиль C",
-                4F,
-                2200F,
-                1400F,
-                160F,
-                2.5F,
-                1.5F,
-                "W"
-        ));
-        materials.add(new MaterialProperties(
-                "микрогофрокартон, профиль E",
-                2F,
-                2200F,
-                1400F,
-                140F,
-                1.3F,
-                0.7F,
-                "L"
-        ));
+
+        matPrefsLoad(materials, matPrefsPath);
 
         selectedMaterial = materials.get(0).name;
 
+        refreshMatList();
+
+        materialViewList = FXCollections.observableArrayList(materialNamesList);
+    }
+
+    private void refreshMatList() {
         for (MaterialProperties mat : materials) {
             materialNamesList.add(mat.name);
         }
-
-        materialViewList = FXCollections.observableArrayList(materialNamesList);
     }
 
     public boolean addMaterial (MaterialProperties material) {
@@ -79,6 +158,8 @@ public class CalculatorModel {
                 return false;
         }
         materials.add(material);
+        materialNamesList.add(material.name);
+        matPrefsSave(materials, matPrefsPath);
         return true;
     }
 
@@ -86,6 +167,19 @@ public class CalculatorModel {
         for (MaterialProperties mat : materials) {
             if (mat.name.equals(material.name)) {
                 materials.remove(mat);
+                return true;
+            }
+        }
+        matPrefsSave(materials, matPrefsPath);
+        return false;
+    }
+
+    public boolean editMaterial (MaterialProperties sourceMat, MaterialProperties destMaterial) {
+        for (int i = 0; i < materials.size(); i++) {
+            if (materials.get(i).equals(sourceMat)) {
+                materials.set(i, destMaterial);
+                refreshMatList();
+                matPrefsSave(materials, matPrefsPath);
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 package com.prodcalc.productioncalc;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,33 +29,11 @@ public class CalcController implements Initializable {
     @FXML
     private Button deleteMaterialBtn;
     @FXML
-    private ToggleGroup productType;
-    @FXML
-    private RadioButton f0201;
-    @FXML
-    private RadioButton f0427;
-    @FXML
-    private RadioButton f0471;
-    @FXML
-    private RadioButton body_lid;
-    @FXML
-    private ToggleGroup selectPrint;
-    @FXML
-    private ToggleGroup selectHand;
-    @FXML
     private TextField productLenghtTextField;
     @FXML
     private TextField productWidthTextField;
     @FXML
     private TextField productHeightTextField;
-    @FXML
-    private RadioButton printYesRadio;
-    @FXML
-    private RadioButton printNoRadio;
-    @FXML
-    private RadioButton handlerYesRadio;
-    @FXML
-    private RadioButton handlerNoRadio;
     @FXML
     private Label cutTimeLabel;
     @FXML
@@ -65,6 +44,7 @@ public class CalcController implements Initializable {
     private Label partOnSheetLabel;
     @FXML
     private Label priceLabel;
+
     @FXML
     void onMaterialListClicked(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
@@ -114,40 +94,45 @@ public class CalcController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        materialListView.getItems().addAll(model.materialNamesList);
+        materialListView.setItems(model.materialViewList);
+//        materialListView.getItems().addAll(model.materialNamesList);
+//        ObservableList<String> itemList = FXCollections.observableList(model.materialNamesList);
+//        materialListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+//            @Override
+//            public ListCell<String> call(ListView<String> stringListView) {
+//                return new ListCell<>() {
+//                    @Override
+//                    protected void updateItem(String t, boolean bln) {
+//                        super.updateItem(t, bln);
+//                        if (t != null)
+//                            setText(t);
+//                    }
+//                };
+//            }
+//        });
+
         materialListView.getSelectionModel().select(0);
-        materialListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                model.selectedMaterial = materialListView.getSelectionModel().getSelectedItem();
-                getResult(model);
-            }
+        materialListView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            model.selectedMaterial = materialListView.getSelectionModel().getSelectedItem();
+            getResult(model);
         });
-        productLenghtTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                model.productLength = intValidator(t1);
-                getResult(model);
-            }
+        productLenghtTextField.textProperty().addListener((observableValue, s, t1) -> {
+            model.productLength = intValidator(t1);
+            getResult(model);
         });
-        productWidthTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                model.productWidth = intValidator(t1);
-                getResult(model);
-            }
+        productWidthTextField.textProperty().addListener((observableValue, s, t1) -> {
+            model.productWidth = intValidator(t1);
+            getResult(model);
         });
-        productHeightTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                model.productHeight = intValidator(t1);
-                getResult(model);
-            }
+        productHeightTextField.textProperty().addListener((observableValue, s, t1) -> {
+            model.productHeight = intValidator(t1);
+            getResult(model);
         });
 
         getResult(model);
 
     }
+
 
     public void onPrintYes(ActionEvent actionEvent) {
         model.printOn = true;
@@ -177,23 +162,35 @@ public class CalcController implements Initializable {
                 false);
         if (materialProperties == null)
             System.out.println("Empty");
-        else
-            System.out.println(materialProperties.name);
+        else {
+            if (model.addMaterial(materialProperties)) {
+                materialListView.getItems().add(materialProperties.name);
+            }
+        }
     }
 
     public void onDeleteMaterialBtn(ActionEvent actionEvent) {
+        model.deleteMaterial(model.getSelectedMaterial());
+        materialListView.getItems().remove(materialListView.getSelectionModel().getSelectedIndex());
     }
 
     private void editMaterial() throws IOException {
+        MaterialProperties sourceMat = model.getSelectedMaterial();
         MaterialDialogWindow materialDialogWindow = new MaterialDialogWindow();
-        MaterialProperties materialProperties = materialDialogWindow.display(
+        MaterialProperties destMaterial = materialDialogWindow.display(
                 model.getSelectedMaterial(),
                 addMaterialBtn.getScene().getWindow(),
                 true);
-        if (materialProperties == null)
+        if (destMaterial == null)
             System.out.println("Empty");
-        else
-            System.out.println(materialProperties.name);
+        else {
+            if (model.editMaterial(sourceMat, destMaterial)) {
+                materialListView.getItems().set(
+                        materialListView.getSelectionModel().getSelectedIndex(), destMaterial.name
+                );
+                getResult(model);
+            }
+        }
     }
 }
 
