@@ -1,7 +1,5 @@
 package com.prodcalc.productioncalc;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CalcController implements Initializable {
@@ -118,14 +116,26 @@ public class CalcController implements Initializable {
         });
         productLenghtTextField.textProperty().addListener((observableValue, s, t1) -> {
             model.productLength = intValidator(t1);
+            if (model.productLength == 0)
+                productLenghtTextField.styleProperty().set("-fx-background-color: tomato");
+            else
+                productLenghtTextField.styleProperty().set("");
             getResult(model);
         });
         productWidthTextField.textProperty().addListener((observableValue, s, t1) -> {
             model.productWidth = intValidator(t1);
+            if (model.productWidth == 0)
+                productWidthTextField.styleProperty().set("-fx-background-color: tomato");
+            else
+                productWidthTextField.styleProperty().set("");
             getResult(model);
         });
         productHeightTextField.textProperty().addListener((observableValue, s, t1) -> {
             model.productHeight = intValidator(t1);
+            if (model.productHeight == 0)
+                productHeightTextField.styleProperty().set("-fx-background-color: tomato");
+            else
+                productHeightTextField.styleProperty().set("");
             getResult(model);
         });
 
@@ -159,7 +169,8 @@ public class CalcController implements Initializable {
         MaterialProperties materialProperties = materialDialogWindow.display(
                 model.getSelectedMaterial(),
                 addMaterialBtn.getScene().getWindow(),
-                false);
+                 model.materialNamesList,
+                 false);
         if (materialProperties == null)
             System.out.println("Empty");
         else {
@@ -180,6 +191,7 @@ public class CalcController implements Initializable {
         MaterialProperties destMaterial = materialDialogWindow.display(
                 model.getSelectedMaterial(),
                 addMaterialBtn.getScene().getWindow(),
+                model.materialNamesList,
                 true);
         if (destMaterial == null)
             System.out.println("Empty");
@@ -202,19 +214,25 @@ enum ProductTypes {
 }
 
 class MaterialDialogWindow {
-    MaterialProperties display(MaterialProperties materialProperties, Window parent, boolean edit) throws IOException {
+    MaterialProperties display(
+            MaterialProperties materialProperties,
+            Window parent,
+            ArrayList<String> namesList,
+            boolean edit) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MaterialDialog.fxml"));
         Parent root = loader.load();
 
         MaterialDialog matController = loader.getController();
         if (edit)
-            matController.setData(materialProperties);
+            matController.setData(materialProperties, new ArrayList<>() {{add("");}});
+        else
+            matController.setData(namesList);
 
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Параметры материала");
         primaryStage.setScene(new Scene(root));
-        root.setStyle("-fx-font-size: 11pt;");
+        root.setStyle("-fx-font-size: 10pt;");
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(parent);
 

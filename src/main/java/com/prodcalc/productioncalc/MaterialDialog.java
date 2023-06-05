@@ -2,12 +2,17 @@ package com.prodcalc.productioncalc;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class MaterialDialog {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class MaterialDialog implements Initializable {
     @FXML
     private TextField nameField;
     @FXML
@@ -28,6 +33,34 @@ public class MaterialDialog {
     private Button cancelButton;
 
     private boolean answer = false;
+    private ArrayList<String> namesList;
+    private final String errorColor = "tomato";
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        nameField.textProperty().addListener((observableValue, s, t1) -> {
+           if (namesList.contains(t1) || t1.equals("")) {
+               nameField.styleProperty().set("-fx-background-color: " + errorColor);
+               okButton.setDisable(true);
+           } else {
+               nameField.styleProperty().set("");
+               okButton.setDisable(false);
+           }
+        });
+        lendthField.textProperty().addListener((observableValue, s, t1) -> {
+            floatFieldCheck(lendthField);
+        });
+    }
+
+    private void floatFieldCheck(TextField textField) {
+        if (!textField.getText().matches("-?\\d+(\\.\\d+)?")) {
+            textField.styleProperty().set("-fx-background-color: " + errorColor);
+            okButton.setDisable(true);
+        } else {
+            textField.styleProperty().set("");
+            okButton.setDisable(false);
+        }
+    }
 
     public void onOkAction(ActionEvent actionEvent) {
         answer = true;
@@ -41,8 +74,12 @@ public class MaterialDialog {
         stage.close();
     }
 
+    public void setData(ArrayList<String> namesList) {
+        this.namesList = namesList;
+    }
 
-    public void setData(MaterialProperties receivedMaterial) {
+    public void setData(MaterialProperties receivedMaterial, ArrayList<String> namesList) {
+        this.namesList = namesList;
         nameField.setText(receivedMaterial.name);
         lendthField.setText(String.valueOf(receivedMaterial.length));
         widthField.setText(String.valueOf(receivedMaterial.width));

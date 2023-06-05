@@ -4,13 +4,112 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="384.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.MaterialDialog">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.MaterialDialog">
    <children>
-      <TextField fx:id="nameField" alignment="CENTER" promptText="Наименование" />
-      <TextField fx:id="lendthField" alignment="CENTER" promptText="Длина" />
-      <TextField fx:id="widthField" alignment="CENTER" promptText="Ширина" />
-      <TextField fx:id="caliberField" alignment="CENTER" promptText="Толщина" />
-      <TextField fx:id="priceField" alignment="CENTER" promptText="Стоимость листа" />
+      <GridPane alignment="CENTER" hgap="3.0" vgap="3.0" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="186.17391636637535" minWidth="10.0" prefWidth="102.17390873698082" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.1739239957699" minWidth="10.0" prefWidth="282.1739239957699" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="nameField" alignment="CENTER" promptText="Наименование" text="---" GridPane.columnIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="lendthField" alignment="CENTER" promptText="Длина" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="widthField" alignment="CENTER" promptText="Ширина" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="caliberField" alignment="CENTER" promptText="Толщина" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="priceField" alignment="CENTER" promptText="Стоимость листа" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Наименование">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label text="Длина" GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label text="Ширина" GridPane.rowIndex="2">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label text="Толщина" GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label text="Стоимость листа" GridPane.rowIndex="4">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </GridPane>
       <Separator prefWidth="200.0">
          <opaqueInsets>
             <Insets bottom="5.0" top="5.0" />
@@ -28,7 +127,7 @@
                <toggleGroup>
                   <ToggleGroup fx:id="fluteDirection" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="shortSideFluteRB" mnemonicParsing="false" text="По коротной стороне" toggleGroup="$fluteDirection">
+            <RadioButton fx:id="shortSideFluteRB" mnemonicParsing="false" text="По короткой стороне" toggleGroup="$fluteDirection">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding></RadioButton>
@@ -36,7 +135,7 @@
          <opaqueInsets>
             <Insets />
          </opaqueInsets></HBox>
-      <HBox alignment="CENTER" prefHeight="97.0" prefWidth="495.0">
+      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="384.0">
          <children>
             <Button fx:id="okButton" mnemonicParsing="false" onAction="#onOkAction" text="Сохранить" />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelAction" text="Отмена" />

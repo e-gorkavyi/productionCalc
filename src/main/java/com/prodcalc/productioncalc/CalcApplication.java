@@ -17,7 +17,7 @@ public class CalcApplication extends Application {
         stage.setTitle("Расчёт стоимости типовых конструкций");
         stage.setScene(scene);
         Parent root = scene.getRoot();
-        root.setStyle("-fx-font-size: 11pt;");
+        root.setStyle("-fx-font-size: 10pt;");
 
         String appPrefsPath = System.getProperty(
                 "user.home") + File.separator +
