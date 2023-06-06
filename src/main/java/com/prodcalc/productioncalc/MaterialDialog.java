@@ -50,6 +50,15 @@ public class MaterialDialog implements Initializable {
         lendthField.textProperty().addListener((observableValue, s, t1) -> {
             floatFieldCheck(lendthField);
         });
+        widthField.textProperty().addListener((observableValue, s, t1) -> {
+            floatFieldCheck(widthField);
+        });
+        caliberField.textProperty().addListener((observableValue, s, t1) -> {
+            floatFieldCheck(caliberField);
+        });
+        priceField.textProperty().addListener((observableValue, s, t1) -> {
+            floatFieldCheck(priceField);
+        });
     }
 
     private void floatFieldCheck(TextField textField) {

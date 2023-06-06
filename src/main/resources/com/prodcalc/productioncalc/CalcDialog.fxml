@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="614.0" prefWidth="552.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.CalcController">
+<VBox prefHeight="653.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prodcalc.productioncalc.CalcController">
   <padding>
-    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
   </padding>
    <children>
       <Label text="Выберите вид изделия" />
@@ -42,7 +42,7 @@
       <Label text="Выберите материал" />
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <ListView fx:id="materialListView" maxHeight="3000.0" onMouseClicked="#onMaterialListClicked" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
+            <ListView fx:id="materialListView" maxHeight="3000.0" minHeight="-Infinity" onMouseClicked="#onMaterialListClicked" prefHeight="102.0" prefWidth="422.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="22.0" prefWidth="523.0">
@@ -52,30 +52,42 @@
          </children>
       </HBox>
       <Separator prefWidth="200.0" />
-      <Label text="Внутренние размеры" />
-      <GridPane VBox.vgrow="NEVER">
+      <GridPane minHeight="-Infinity">
         <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="271.36520592615614" minWidth="148.60870091342764" prefWidth="148.60870091342764" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="266.4173960948578" minWidth="10.0" prefWidth="227.04348546047993" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="146.99999999999994" minWidth="47.99999999999994" prefWidth="146.99999999999994" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Длина" />
-            <Label text="Ширина" GridPane.rowIndex="1" />
-            <Label text="Высота" GridPane.rowIndex="2" />
-            <TextField fx:id="productLenghtTextField" text="100" GridPane.columnIndex="1" />
-            <TextField fx:id="productWidthTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="productHeightTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Длина" GridPane.rowIndex="1" />
+            <Label text="Ширина" GridPane.rowIndex="2" />
+            <Label text="Высота" GridPane.rowIndex="3" />
+            <TextField fx:id="productLenghtTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="productWidthTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="productHeightTextField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Внутренние размеры" GridPane.halignment="LEFT" />
+            <Label text="Цены" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+            <Label text="Резка за минуту" GridPane.rowIndex="5" />
+            <Label text="Печать за м²" GridPane.rowIndex="6" />
+            <Label text="Ручка" GridPane.rowIndex="7" />
+            <TextField fx:id="cutPriceField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="printPriceField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="handlerPriceField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
       <Separator prefWidth="200.0" />
       <Label text="Печать" />
-      <HBox alignment="TOP_CENTER">
+      <HBox alignment="TOP_CENTER" prefHeight="17.0" prefWidth="523.0">
          <children>
             <RadioButton fx:id="printYesRadio" mnemonicParsing="false" onAction="#onPrintYes" text="Да">
                <HBox.margin>
@@ -94,7 +106,7 @@
       </HBox>
       <Separator prefWidth="200.0" />
       <Label layoutX="25.0" layoutY="382.0" text="Ручка" />
-      <HBox alignment="TOP_CENTER" layoutX="25.0" layoutY="406.0" prefHeight="51.0" prefWidth="422.0">
+      <HBox alignment="TOP_CENTER" layoutX="25.0" layoutY="406.0" prefHeight="19.0" prefWidth="523.0">
          <children>
             <RadioButton fx:id="handlerYesRadio" mnemonicParsing="false" onAction="#onHandlerYes" text="Да">
                <HBox.margin>

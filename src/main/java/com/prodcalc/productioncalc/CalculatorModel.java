@@ -126,6 +126,9 @@ public class CalculatorModel {
     public int productLength = 100;
     public int productWidth = 100;
     public int productHeight = 100;
+    public float cutPrice = 72;
+    public float printPrice = 450;
+    public float handlerPrice = 20;
     public boolean printOn = false;
     public boolean handlerOn = false;
     public ObservableList<String> materialViewList;
@@ -167,10 +170,10 @@ public class CalculatorModel {
         for (MaterialProperties mat : materials) {
             if (mat.name.equals(material.name)) {
                 materials.remove(mat);
+                matPrefsSave(materials, matPrefsPath);
                 return true;
             }
         }
-        matPrefsSave(materials, matPrefsPath);
         return false;
     }
 
@@ -373,9 +376,9 @@ public class CalculatorModel {
                 T = (int) T + 1F;
 
             // Цена
-            float PT = 72F;     // стоимость резки
-            float PP = 450;    // стоимость печати
-            float PH = 20;     // стоимость ручки
+            float PT = cutPrice;     // стоимость резки
+            float PP = printPrice;    // стоимость печати
+            float PH = handlerPrice;     // стоимость ручки
 
             double price = (P / C * BlanksOnProd + PT * T) * 1.5;
 

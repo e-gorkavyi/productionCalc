@@ -21,6 +21,12 @@ import java.util.ResourceBundle;
 public class CalcController implements Initializable {
 
     @FXML
+    public TextField cutPriceField;
+    @FXML
+    public TextField printPriceField;
+    @FXML
+    public TextField handlerPriceField;
+    @FXML
     private ListView<String> materialListView;
     @FXML
     private Button addMaterialBtn;
@@ -83,11 +89,11 @@ public class CalcController implements Initializable {
     }
 
     public int intValidator(String newValue) {
-        try {
-            return Integer.parseInt(newValue);
-        } catch (Exception e) {
-            return 0;
-        }
+        return newValue.matches("-?\\d+") ? Integer.parseInt(newValue) : 0;
+    }
+
+    public float floatValidator(String newValue) {
+        return newValue.matches("-?\\d+(\\.\\d+)?") ? Float.parseFloat(newValue) : -1.0F;
     }
 
     @Override
@@ -232,7 +238,7 @@ class MaterialDialogWindow {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Параметры материала");
         primaryStage.setScene(new Scene(root));
-        root.setStyle("-fx-font-size: 10pt;");
+//        root.setStyle("-fx-font-size: 10pt;");
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(parent);
 
