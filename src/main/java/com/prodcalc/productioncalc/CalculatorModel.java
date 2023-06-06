@@ -184,6 +184,8 @@ public class CalculatorModel {
 
         matLoad(materials, matPrefsPath);
 
+        priceLoad();
+
         selectedMaterial = materials.get(0).name;
 
         refreshMatList();
@@ -247,7 +249,20 @@ public class CalculatorModel {
         priceTxt = "Недопустимые размеры.";
     }
 
+    private void priceError() {
+        cutTimeTxt = "";
+        sheetSizeTxt = "";
+        partSizeTxt = "";
+        partOnSheetTxt = "";
+        priceTxt = "Недопустимые цены.";
+    }
+
     public void go() {
+        if (cutPrice < 0 || printPrice < 0 || handlerPrice < 0) {
+            priceError();
+            return;
+        }
+
         MaterialProperties currentMaterial = materials.stream()
                 .filter(mat -> selectedMaterial.equals(mat.name))
                 .findAny()

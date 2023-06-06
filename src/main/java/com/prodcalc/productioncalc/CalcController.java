@@ -97,12 +97,12 @@ public class CalcController implements Initializable {
         return newValue.matches("-?\\d+") ? Integer.parseInt(newValue) : 0;
     }
 
-    public int floatValidator(String newValue, TextField field) {
+    public float floatValidator(String newValue, TextField field) {
         if (!newValue.matches("-?\\d+(\\.\\d+)?"))
             field.setStyle("-fx-background-color: tomato");
         else
             field.setStyle("");
-        return (int) (newValue.matches("-?\\d+(\\.\\d+)?") ? Float.parseFloat(newValue) : 1.0F);
+        return newValue.matches("-?\\d+(\\.\\d+)?") ? Float.parseFloat(newValue) : -1.0F;
     }
 
     @Override
