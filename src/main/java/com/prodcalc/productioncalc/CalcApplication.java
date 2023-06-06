@@ -16,8 +16,6 @@ public class CalcApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Расчёт стоимости типовых конструкций");
         stage.setScene(scene);
-//        Parent root = scene.getRoot();
-//        root.setStyle("-fx-font-size: 10pt;");
 
         String appPrefsPath = System.getProperty(
                 "user.home") + File.separator +
@@ -46,6 +44,9 @@ public class CalcApplication extends Application {
             properties.setProperty("WindowWidth", "552");
             properties.setProperty("WindowPositionX", "200");
             properties.setProperty("WindowPositionY", "200");
+            properties.setProperty("CutPrice", "72");
+            properties.setProperty("PrintPrice", "450");
+            properties.setProperty("HandlerPrice", "20");
         }
 
         stage.setHeight(Double.parseDouble(properties.getProperty("WindowHeight")));

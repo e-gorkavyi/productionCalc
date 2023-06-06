@@ -2,7 +2,6 @@ package com.prodcalc.productioncalc;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +15,13 @@ public class CalculatorModel {
             "productionCalc" + File.separator +
             "materials.conf";
 
-    public void matPrefsLoad(ArrayList<MaterialProperties> matList, String filePath) {
+    String pricePrefsPath = System.getProperty(
+            "user.home") + File.separator +
+            ".config" + File.separator +
+            "productionCalc" + File.separator +
+            "prices.conf";
+
+    public void matAndPriceLoad(ArrayList<MaterialProperties> matList, String filePath, String priceFilePath) {
         Properties properties = new Properties();
 
         if (new File(filePath).exists()) {
@@ -78,9 +83,23 @@ public class CalculatorModel {
                     "L"
             ));
         }
+
+        Properties pricesProperties = new Properties();
+        if (new File(priceFilePath).exists()) {
+            try {
+                FileInputStream inputStream = new FileInputStream(filePath);
+                pricesProperties.loadFromXML(inputStream);
+
+                cutPrice = Float.parseFloat(pricesProperties.getProperty("CutPrice"));
+                printPrice = Float.parseFloat(pricesProperties.getProperty("PrintPrice"));
+                handlerPrice = Float.parseFloat(pricesProperties.getProperty("HandlerPrice"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void matPrefsSave(ArrayList<MaterialProperties> matList, String filePath) {
+    public void matAndPriceSave(ArrayList<MaterialProperties> matList, String matFilePath, String priceFilePath) {
         Properties properties = new Properties();
 
         try {
@@ -95,7 +114,7 @@ public class CalculatorModel {
                 properties.setProperty(i + "-fluteDirection", matList.get(i).fluteDirection);
             }
 
-            File outFile = new File(filePath);
+            File outFile = new File(matFilePath);
             outFile.getParentFile().mkdirs();
             System.out.println(outFile.delete());
             System.out.println(outFile.createNewFile());
@@ -106,7 +125,25 @@ public class CalculatorModel {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(filePath);
+            System.out.println(matFilePath);
+        }
+
+        Properties pricesProperties = new Properties();
+        pricesProperties.setProperty("CutPrice", String.valueOf(cutPrice));
+        pricesProperties.setProperty("PrintPrice", String.valueOf(printPrice));
+        pricesProperties.setProperty("HandlerPrice", String.valueOf(handlerPrice));
+
+        try {
+            File outFile = new File(priceFilePath);
+            outFile.getParentFile().mkdirs();
+            System.out.println(outFile.delete());
+            System.out.println(outFile.createNewFile());
+
+            OutputStream outputstream = new FileOutputStream(outFile, false);
+            pricesProperties.storeToXML(outputstream,"Price Prefs");
+            outputstream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -140,7 +177,7 @@ public class CalculatorModel {
 
     public CalculatorModel() {
 
-        matPrefsLoad(materials, matPrefsPath);
+        matAndPriceLoad(materials, matPrefsPath, pricePrefsPath);
 
         selectedMaterial = materials.get(0).name;
 
@@ -162,7 +199,7 @@ public class CalculatorModel {
         }
         materials.add(material);
         materialNamesList.add(material.name);
-        matPrefsSave(materials, matPrefsPath);
+        matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
         return true;
     }
 
@@ -170,7 +207,7 @@ public class CalculatorModel {
         for (MaterialProperties mat : materials) {
             if (mat.name.equals(material.name)) {
                 materials.remove(mat);
-                matPrefsSave(materials, matPrefsPath);
+                matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
                 return true;
             }
         }
@@ -182,7 +219,7 @@ public class CalculatorModel {
             if (materials.get(i).equals(sourceMat)) {
                 materials.set(i, destMaterial);
                 refreshMatList();
-                matPrefsSave(materials, matPrefsPath);
+                matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
                 return true;
             }
         }

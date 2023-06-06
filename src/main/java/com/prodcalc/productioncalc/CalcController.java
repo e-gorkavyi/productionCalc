@@ -48,13 +48,16 @@ public class CalcController implements Initializable {
     private Label partOnSheetLabel;
     @FXML
     private Label priceLabel;
-
     @FXML
     void onMaterialListClicked(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if (mouseEvent.getClickCount() == 2)
                 editMaterial();
         }
+    }
+
+    public void shutdown() {
+        System.out.println("Stopped");
     }
 
     private CalculatorModel model = new CalculatorModel();
@@ -144,6 +147,10 @@ public class CalcController implements Initializable {
                 productHeightTextField.styleProperty().set("");
             getResult(model);
         });
+
+        cutPriceField.setText(String.valueOf(model.cutPrice));
+        printPriceField.setText(String.valueOf(model.printPrice));
+        handlerPriceField.setText(String.valueOf(model.handlerPrice));
 
         getResult(model);
 
