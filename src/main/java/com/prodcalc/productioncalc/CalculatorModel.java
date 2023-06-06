@@ -21,7 +21,7 @@ public class CalculatorModel {
             "productionCalc" + File.separator +
             "prices.conf";
 
-    public void matAndPriceLoad(ArrayList<MaterialProperties> matList, String filePath, String priceFilePath) {
+    public void matLoad(ArrayList<MaterialProperties> matList, String filePath) {
         Properties properties = new Properties();
 
         if (new File(filePath).exists()) {
@@ -83,11 +83,13 @@ public class CalculatorModel {
                     "L"
             ));
         }
+    }
 
+    public void priceLoad() {
         Properties pricesProperties = new Properties();
-        if (new File(priceFilePath).exists()) {
+        if (new File(pricePrefsPath).exists()) {
             try {
-                FileInputStream inputStream = new FileInputStream(filePath);
+                FileInputStream inputStream = new FileInputStream(pricePrefsPath);
                 pricesProperties.loadFromXML(inputStream);
 
                 cutPrice = Float.parseFloat(pricesProperties.getProperty("CutPrice"));
@@ -99,7 +101,7 @@ public class CalculatorModel {
         }
     }
 
-    public void matAndPriceSave(ArrayList<MaterialProperties> matList, String matFilePath, String priceFilePath) {
+    public void matSave(ArrayList<MaterialProperties> matList, String matFilePath) {
         Properties properties = new Properties();
 
         try {
@@ -128,19 +130,22 @@ public class CalculatorModel {
             System.out.println(matFilePath);
         }
 
+    }
+
+    public void priceSave() {
         Properties pricesProperties = new Properties();
         pricesProperties.setProperty("CutPrice", String.valueOf(cutPrice));
         pricesProperties.setProperty("PrintPrice", String.valueOf(printPrice));
         pricesProperties.setProperty("HandlerPrice", String.valueOf(handlerPrice));
 
         try {
-            File outFile = new File(priceFilePath);
+            File outFile = new File(pricePrefsPath);
             outFile.getParentFile().mkdirs();
             System.out.println(outFile.delete());
             System.out.println(outFile.createNewFile());
 
             OutputStream outputstream = new FileOutputStream(outFile, false);
-            pricesProperties.storeToXML(outputstream,"Price Prefs");
+            pricesProperties.storeToXML(outputstream, "Price Prefs");
             outputstream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,7 +182,7 @@ public class CalculatorModel {
 
     public CalculatorModel() {
 
-        matAndPriceLoad(materials, matPrefsPath, pricePrefsPath);
+        matLoad(materials, matPrefsPath);
 
         selectedMaterial = materials.get(0).name;
 
@@ -199,7 +204,7 @@ public class CalculatorModel {
         }
         materials.add(material);
         materialNamesList.add(material.name);
-        matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
+        matSave(materials, matPrefsPath);
         return true;
     }
 
@@ -207,7 +212,7 @@ public class CalculatorModel {
         for (MaterialProperties mat : materials) {
             if (mat.name.equals(material.name)) {
                 materials.remove(mat);
-                matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
+                matSave(materials, matPrefsPath);
                 return true;
             }
         }
@@ -219,7 +224,7 @@ public class CalculatorModel {
             if (materials.get(i).equals(sourceMat)) {
                 materials.set(i, destMaterial);
                 refreshMatList();
-                matAndPriceSave(materials, matPrefsPath, pricePrefsPath);
+                matSave(materials, matPrefsPath);
                 return true;
             }
         }

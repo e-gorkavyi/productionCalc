@@ -1,5 +1,6 @@
 package com.prodcalc.productioncalc;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,16 +49,13 @@ public class CalcController implements Initializable {
     private Label partOnSheetLabel;
     @FXML
     private Label priceLabel;
+
     @FXML
     void onMaterialListClicked(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if (mouseEvent.getClickCount() == 2)
                 editMaterial();
         }
-    }
-
-    public void shutdown() {
-        System.out.println("Stopped");
     }
 
     private CalculatorModel model = new CalculatorModel();
@@ -91,32 +89,25 @@ public class CalcController implements Initializable {
         getResult(model);
     }
 
-    public int intValidator(String newValue) {
+    public int intValidator(String newValue, TextField field) {
+        if (!newValue.matches("-?\\d+"))
+            field.setStyle("-fx-background-color: tomato");
+        else
+            field.setStyle("");
         return newValue.matches("-?\\d+") ? Integer.parseInt(newValue) : 0;
     }
 
-    public float floatValidator(String newValue) {
-        return newValue.matches("-?\\d+(\\.\\d+)?") ? Float.parseFloat(newValue) : -1.0F;
+    public int floatValidator(String newValue, TextField field) {
+        if (!newValue.matches("-?\\d+(\\.\\d+)?"))
+            field.setStyle("-fx-background-color: tomato");
+        else
+            field.setStyle("");
+        return (int) (newValue.matches("-?\\d+(\\.\\d+)?") ? Float.parseFloat(newValue) : 1.0F);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         materialListView.setItems(model.materialViewList);
-//        materialListView.getItems().addAll(model.materialNamesList);
-//        ObservableList<String> itemList = FXCollections.observableList(model.materialNamesList);
-//        materialListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-//            @Override
-//            public ListCell<String> call(ListView<String> stringListView) {
-//                return new ListCell<>() {
-//                    @Override
-//                    protected void updateItem(String t, boolean bln) {
-//                        super.updateItem(t, bln);
-//                        if (t != null)
-//                            setText(t);
-//                    }
-//                };
-//            }
-//        });
 
         materialListView.getSelectionModel().select(0);
         materialListView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
@@ -124,28 +115,44 @@ public class CalcController implements Initializable {
             getResult(model);
         });
         productLenghtTextField.textProperty().addListener((observableValue, s, t1) -> {
-            model.productLength = intValidator(t1);
-            if (model.productLength == 0)
-                productLenghtTextField.styleProperty().set("-fx-background-color: tomato");
-            else
-                productLenghtTextField.styleProperty().set("");
+            model.productLength = intValidator(t1, productLenghtTextField);
             getResult(model);
         });
         productWidthTextField.textProperty().addListener((observableValue, s, t1) -> {
-            model.productWidth = intValidator(t1);
-            if (model.productWidth == 0)
-                productWidthTextField.styleProperty().set("-fx-background-color: tomato");
-            else
-                productWidthTextField.styleProperty().set("");
+            model.productWidth = intValidator(t1, productWidthTextField);
             getResult(model);
         });
         productHeightTextField.textProperty().addListener((observableValue, s, t1) -> {
-            model.productHeight = intValidator(t1);
-            if (model.productHeight == 0)
-                productHeightTextField.styleProperty().set("-fx-background-color: tomato");
-            else
-                productHeightTextField.styleProperty().set("");
+            model.productHeight = intValidator(t1, productHeightTextField);
             getResult(model);
+        });
+        printPriceField.textProperty().addListener((observableValue, s, t1) -> {
+            model.printPrice = floatValidator(t1, printPriceField);
+            getResult(model);
+        });
+        cutPriceField.textProperty().addListener((observableValue, s, t1) -> {
+            model.cutPrice = floatValidator(t1, cutPriceField);
+            getResult(model);
+        });
+        handlerPriceField.textProperty().addListener((observableValue, s, t1) -> {
+            model.handlerPrice = floatValidator(t1, handlerPriceField);
+            getResult(model);
+        });
+
+        cutPriceField.focusedProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (!newVal)
+                model.priceSave();
+        });
+        printPriceField.focusedProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (!newVal)
+                model.priceSave();
+        });
+        handlerPriceField.focusedProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (!newVal)
+                model.priceSave();
         });
 
         cutPriceField.setText(String.valueOf(model.cutPrice));
@@ -182,8 +189,8 @@ public class CalcController implements Initializable {
         MaterialProperties materialProperties = materialDialogWindow.display(
                 model.getSelectedMaterial(),
                 addMaterialBtn.getScene().getWindow(),
-                 model.materialNamesList,
-                 false);
+                model.materialNamesList,
+                false);
         if (materialProperties == null)
             System.out.println("Empty");
         else {
@@ -238,7 +245,9 @@ class MaterialDialogWindow {
 
         MaterialDialog matController = loader.getController();
         if (edit)
-            matController.setData(materialProperties, new ArrayList<>() {{add("");}});
+            matController.setData(materialProperties, new ArrayList<>() {{
+                add("");
+            }});
         else
             matController.setData(namesList);
 
