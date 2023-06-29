@@ -1,6 +1,4 @@
 # produclionCalc
 Specific production calrulator.
 
-IntelliJ Idea
-Maven
-JavaFX
+IntelliJ Idea, Maven, JavaFX
