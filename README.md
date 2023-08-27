@@ -1,4 +1,4 @@
 # produclionCalc
-Specific production calrulator.
+Calculator of specific production.
 
 IntelliJ Idea, Maven, JavaFX
